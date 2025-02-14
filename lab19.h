@@ -63,6 +63,42 @@ void Unit::newTurn(){
 	guard_on = false;
 }
 
+bool Unit::isDead() {
+    return hp <= 0;  
+}
+
+int Unit::beAttacked(int oppAtk) {
+    int damage;
+    
+    if (guard_on) {
+        damage = (oppAtk - def) / 3; 
+    } else {
+        damage = oppAtk - def;
+    }
+
+    if (damage < 0) damage = 0; 
+
+    hp -= damage; 
+    if (hp < 0) hp = 0; 
+
+    return damage;
+}
+
+int Unit::heal() {
+    int healAmount = rand() % 21 + 10; 
+    int actualHeal = min(healAmount, hpmax - hp); 
+    hp += actualHeal; 
+    return actualHeal; 
+}
+
+int Unit::attack(Unit &target) {
+    return target.beAttacked(atk); 
+}
+
+
+void Unit::guard(){
+	guard_on = true;
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////
